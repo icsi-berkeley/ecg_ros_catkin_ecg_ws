@@ -1,3 +1,15 @@
 [submodule "src/ros_cqi"]
 	path = src/ros_cqi
-	url = https://meppe@github.com/meppe/ros_cqi.git
+	url = https://github.com/meppe/ros_cqi
+[submodule "src/ros_ecgworkbench"]
+	path = src/ros_ecgworkbench
+	url = https://github.com/meppe/ros_ecgworkbench
+[submodule "src/darwin_description"]
+	path = src/darwin_description
+	url = https://github.com/HumaRobotics/darwin_description
+[submodule "src/darwin_control"]
+	path = src/darwin_control
+	url = https://github.com/HumaRobotics/darwin_control
+[submodule "src/darwin_gazebo"]
+	path = src/darwin_gazebo
+	url = https://github.com/HumaRobotics/darwin_gazebo
