@@ -1,0 +1,3 @@
+[submodule "src/ros_cqi"]
+	path = src/ros_cqi
+	url = https://meppe@github.com/meppe/ros_cqi.git
