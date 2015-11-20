@@ -3,7 +3,7 @@ The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT re
 
 
 
-## Unsuccessful Installation Protocol under MacOS (Yosemite El Capitan)
+## Unsuccessful Installation Protocol for ROS  indigo under MacOS (Yosemite El Capitan)
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
 
 Everything went well until 
@@ -122,14 +122,14 @@ That worked fine. Then did the rosdep install again:
 
 	rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
-The graphviz issue is resolve, now the error is:
+The graphviz issue is resolved, now the error is:
 			
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [theora]
 			  homebrew: Failed to detect successful installation of [gazebo]
 
 
- Now tried to install theora:
+Next, installed theora:
 
  	brew install theora
 
@@ -142,14 +142,12 @@ It went fine, now the error is:
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [gazebo]
 
-Getting back to gazebo:
-
-I did 
+Getting back to the gazebo issue, I did 
 
 	brew unlink gazebo1
 	brew link --overwrite gazebo2
 
-Then again:
+So that the system now uses gazebo2. Then I tried again:
 	
 	rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
@@ -159,9 +157,9 @@ With the same error:
 			  homebrew: Failed to detect successful installation of [gazebo]
 
 
-I assume that the error is not a big deal since gazebo2 installed successfully. So let's skip the gazebo test using the --skip-keys option and resolve the rest of the dependencies:
+I assume that the error is not a big deal since gazebo2 and gazebo1 both installed successfully. So let's skip the gazebo test using the --skip-keys option and resolve the rest of the dependencies:
 
-rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys gazebo
+	rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys gazebo
 
 This resulted in:
 
@@ -177,7 +175,7 @@ With the result:
 
 	Warning: pyqwt-5.2.0 already installed
 
-Since already installed I skip this key, too. 
+Since already installed I skip this key too, and try to resolve dependencies again. 
 
 	rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys gazebo pyqwt
 
