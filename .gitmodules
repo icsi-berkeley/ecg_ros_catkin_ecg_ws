@@ -1,9 +1,9 @@
 [submodule "src/ros_cqi"]
 	path = src/ros_cqi
-	url = https://github.com/meppe/ros_cqi
+	url = https://github.com/icsi-berkeley/ros_cqi
 [submodule "src/ros_ecgworkbench"]
 	path = src/ros_ecgworkbench
-	url = https://github.com/meppe/ros_ecgworkbench
+	url = https://github.com/icsi-berkeley/ros_ecgworkbench
 [submodule "src/darwin_description"]
 	path = src/darwin_description
 	url = https://github.com/HumaRobotics/darwin_description

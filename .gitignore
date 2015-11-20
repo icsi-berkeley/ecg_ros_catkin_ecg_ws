@@ -47,6 +47,10 @@ coverage.xml
 *.mo
 *.pot
 
+# Other 
+._.DS_Store
+.DS_Store
+
 # Django stuff:
 *.log
 
@@ -55,8 +59,3 @@ docs/_build/
 
 # PyBuilder
 target/
-
-
-# Other manual stuff
-devel
-
