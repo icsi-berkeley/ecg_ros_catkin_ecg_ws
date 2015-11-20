@@ -3,12 +3,14 @@ The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT re
 
 
 
-* Unsuccessful Installation Protocol under MacOS (Yosemite El Capitan) *
+## Unsuccessful Installation Protocol under MacOS (Yosemite El Capitan)
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
 
 Everything went well until 
 
-rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+	rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+
+Got the following error:
 
 			Error:
 			rosdep install --from-paths src --ignore-src --rosdistro indigo -y
@@ -26,19 +28,20 @@ rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
 
 Try to fix: by installing xquartz using 
-brew install Caskroom/cask/xquartz
 
-			Then the next error is:
+	brew install Caskroom/cask/xquartz
+
+Then the next error was:
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [gazebo]
 			  homebrew: Failed to detect successful installation of [graphviz]
 			  homebrew: Failed to detect successful installation of [theora]
 
- Try to fix by installing gazebo2, but it complained about symlink conflicts with gazebo1
+Try to fix by installing gazebo2
+	
+	brew install gazebo2
 
- I did:
- brew install gazebo2
-
+which resulted in the following output (symlink conflicts with gazebo1):
 
 			==> Installing gazebo2 from osrf/homebrew-simulation
 			==> Downloading http://gazebosim.org/distributions/gazebo/releases/gazebo-2.2.6.t
@@ -112,48 +115,55 @@ brew install Caskroom/cask/xquartz
 
 Postponed this problem and tried to install graphviz:
 
-brew install graphviz
+	brew install graphviz
 
 
-Then did the rosdep install again:
+That worked fine. Then did the rosdep install again:
 
-rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+	rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
-It went fine, now the error is:
+The graphviz issue is resolve, now the error is:
 			
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [theora]
 			  homebrew: Failed to detect successful installation of [gazebo]
 
 
- now try to install theora:
+ Now tried to install theora:
 
- brew install theora
+ 	brew install theora
 
- Then did the rosdep install again:
+Then did the rosdep install again:
 
-rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+	rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
 It went fine, now the error is:
+			
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [gazebo]
 
 Getting back to gazebo:
 
 I did 
-brew unlink gazebo1
-brew link --overwrite gazebo2
+
+	brew unlink gazebo1
+	brew link --overwrite gazebo2
 
 Then again:
-rosdep install --from-paths src --ignore-src --rosdistro indigo -y
+	
+	rosdep install --from-paths src --ignore-src --rosdistro indigo -y
 
+With the same error:
+			
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [gazebo]
 
 
-OK, I assume that the error is not a big deal since gazebo2 installed successfully. So let's skip the gazebo test and resolve the rest of the dependencies:
+I assume that the error is not a big deal since gazebo2 installed successfully. So let's skip the gazebo test using the --skip-keys option and resolve the rest of the dependencies:
 
 rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys gazebo
+
+This resulted in:
 
 			ERROR: the following rosdeps failed to install
 			  homebrew: command [brew install pyqwt] failed
@@ -161,19 +171,23 @@ rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys g
 
 I did 
 
-brew install pyqwt
+	brew install pyqwt
 
-Warning: pyqwt-5.2.0 already installed
+With the result:
+
+	Warning: pyqwt-5.2.0 already installed
 
 Since already installed I skip this key, too. 
 
-rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys gazebo pyqwt
+	rosdep install --from-paths src --ignore-src --rosdistro indigo -y --skip-keys gazebo pyqwt
 
 Result:
-All required rosdeps installed successfully
 
-I installed the catkin workspace with :
-./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release 
+	All required rosdeps installed successfully
+
+Then I installed the catkin workspace with :
+	
+	./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release 
 
 
 
@@ -244,11 +258,12 @@ Then the following error occurred involving gazebo:
 
 Then I linked gazebo1 again instead of gazebo2
 
-brew unlink gazebo2
-brew link --overwrite gazebo1
+	brew unlink gazebo2
+	brew link --overwrite gazebo1
 
 I installed the catkin workspace again with :
-./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release 
+
+	./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release 
 
 
 Again an error occurred: 
@@ -277,11 +292,12 @@ Again an error occurred:
 			Command failed, exiting.											
 
 Then I did :
-brew install openni
+
+	brew install openni
 
 Then I did again:
 
-./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
+	./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
 
 The next error was 
 
@@ -317,13 +333,15 @@ The next error was
 
 
 I did 
-brew install openni2
+
+	brew install openni2
 
 Then I did again:
 
-./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
+	./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
 
 The same error occurred:
+
 			-- Checking for module 'libopenni2'
 			--   Package 'libopenni2' not found
 			-- Could NOT find ensenso (missing:  ENSENSO_LIBRARY ENSENSO_INCLUDE_DIR) 
@@ -353,4 +371,4 @@ The same error occurred:
 			Command failed, exiting.
 
 
-
+Stopped here and did not try further. 
