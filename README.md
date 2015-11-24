@@ -1,7 +1,22 @@
 # ros_catkin_ecg_ws
-The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT repository to collect all required repositories as submodules for running the ECG workbench demos. All code is supposed to run under ROS indigo. Tested with Ubuntu 14.04
+The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT repository to collect all required repositories as submodules for running the ECG workbench demos. All code is supposed to run under ROS indigo and tested with Ubuntu 14.04
+
+## Installation and Dependencies
+The installation notes are based on the following tutorial for DARwin-OP:
+http://www.generationrobots.com/en/content/83-carry-out-simulations-and-make-your-darwin-op-walk-with-gazebo-and-ros
 
 
+Install prerequisites for the gazebo_darwin packages and do:
+
+	sudo apt-get install git ros-indigo-desktop-full ros-indigo-gazebo-plugins ros-indigo-gazebo-ros ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-hector-gazebo-plugins ros-indigo-effort-controllers ros-indigo-joint-state-controller ros-indigo-joint-state-publisher ros-indigo-turtlebot-teleop 
+
+Then clone this git repository. Its root folder is a new catkin workspace. Assuming you have cloned the repository in a directory "~/ros_catkin_ecg_ws" do the following to initialize the catkin workspace
+	
+	cd ~/ros_catkin_ecg_ws/src
+	catkin_init_workspace
+
+
+TBC...
 
 ## Unsuccessful Installation Protocol for ROS  indigo under MacOS (Yosemite El Capitan)
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
