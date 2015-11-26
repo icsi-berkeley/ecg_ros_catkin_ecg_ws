@@ -32,6 +32,7 @@ Try to fix: by installing xquartz using
 	brew install Caskroom/cask/xquartz
 
 Then the next error was:
+
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [gazebo]
 			  homebrew: Failed to detect successful installation of [graphviz]
