@@ -370,4 +370,50 @@ The same error occurred:
 			Command failed, exiting.
 
 
-Stopped here and did not try further. 
+Followed the hint at http://stackoverflow.com/questions/26311715/solving-a-difficult-compilation-issue
+That is, glew seems to be not present anymore in MacOS since 10.9 (Mavericks), so that the file 
+/usr/local/share/pcl-1.8/PCLConfig.cmake is deprecated. 
+To fix the issue, change the following line (around line number 500) in that file:
+	
+	/System/Library/Frameworks/GLEW.framework/Versions/A/Headers
+
+to line:
+	
+	/usr/local/Cellar/glew/1.13.0/include/GL
+
+
+Then, running catkin_make_isolated again caused other errors:
+
+	[ 20%] Built target pcl_ros_gencfg
+	[ 22%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pcd_to_image
+	[ 23%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pointcloud_to_image
+	[ 25%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pcd_to_pointcloud
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pcd_to_image] Error 1
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pointcloud_to_image] Error 1
+	make[1]: *** [CMakeFiles/convert_pcd_to_image.dir/all] Error 2
+	make[1]: *** Waiting for unfinished jobs....
+	make[1]: *** [CMakeFiles/convert_pointcloud_to_image.dir/all] Error 2
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pcd_to_pointcloud] Error 1
+	make[1]: *** [CMakeFiles/pcd_to_pointcloud.dir/all] Error 2
+	[ 26%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pointcloud_to_pcd
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pointcloud_to_pcd] Error 1
+	make[1]: *** [CMakeFiles/pointcloud_to_pcd.dir/all] Error 2
+	make: *** [all] Error 2
+	<== Failed to process package 'pcl_ros': 
+	  Command '['/Users/meppe/ROS/homebrew_catkin_ws/install_isolated/env.sh', 'make', '-j4', '-l4']' returned non-zero exit status 2
+
+	Reproduce this error by running:
+	==> cd /Users/meppe/ROS/homebrew_catkin_ws/build_isolated/pcl_ros && /Users/meppe/ROS/homebrew_catkin_ws/install_isolated/env.sh make -j4 -l4
+
+	Command failed, exiting.
+
+
+TBC... stopped at this point. 
