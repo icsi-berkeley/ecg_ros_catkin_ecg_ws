@@ -13,6 +13,6 @@
 [submodule "src/darwin_gazebo"]
 	path = src/darwin_gazebo
 	url = https://github.com/HumaRobotics/darwin_gazebo
-[submodule "lsd_slam"]
-	path = lsd_slam
+[submodule "src/lsd_slam"]
+	path = src/lsd_slam
 	url = https://github.com/tum-vision/lsd_slam.git
