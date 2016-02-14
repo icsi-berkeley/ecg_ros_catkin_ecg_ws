@@ -1,5 +1,5 @@
 # ros_catkin_ecg_ws
-The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT repository to collect all required repositories as submodules for running the ECG workbench demos. All code is supposed to run under ROS indigo and tested with Ubuntu 14.04
+The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT repository to collect all required repositories as submodules for running the ECG workbench demos. All code is supposed to run under ROS indigo and tested with Ubuntu 14.04. Everything is tested with Python 2.7.X only, Python 3.X will probably not work. 
 
 ## Installation and Dependencies
 The installation notes are based on the following tutorial for DARwin-OP:
@@ -10,15 +10,78 @@ Install prerequisites for the gazebo_darwin packages and do:
 
 	sudo apt-get install git ros-indigo-desktop-full ros-indigo-gazebo-plugins ros-indigo-gazebo-ros ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-hector-gazebo-plugins ros-indigo-effort-controllers ros-indigo-joint-state-controller ros-indigo-joint-state-publisher ros-indigo-turtlebot-teleop 
 
-Then clone this git repository. Its root folder is a new catkin workspace. Assuming you have cloned the repository in a directory "~/ros_catkin_ecg_ws" do the following to initialize the catkin workspace
+Then clone this git repository. Its root folder is a new catkin workspace, which we assume to be ~/ros_catkin_ecg_ws. You'll execute most other commands in these instructions from there. 
+
+Next, you need to initialize and update the submodules within this repository. The submodules contain the ROS code for the darwin robot and the ECG workbench. Cd into ~/ros_catkin_ecg_ws and do the following:
 	
-	cd ~/ros_catkin_ecg_ws/src
-	catkin_init_workspace
+	cd ~/ros_catkin_ecg_ws
+	git submodule update --init --recursive	
+	
+Make sure that you have checked out the py2 branch of ecg workbench:
+
+	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench
+	git checkout py2
+
+Now you need to build the workspace. Do this by 
+	
+	cd ~/ros_catkin_ecg_ws
+	catkin_make
+	catkin_make install
+
+Next you need to source come setup file. We recommend to do this automatically by doing that in your .bashrc.
+
+	echo "source ~/ros_catkin_ecg_ws/devel/setup.bash" >> ~/.bashrc
+	source ~/.bashrc
+
+To setup the indoor environment, we need to do some not very elegant things and copy a predefined indoor environment launch file for the darwin to the darwin_gazeob launch folder:
+
+	cp config/launch_config/indoor_darwin_gazebo.launch src/darwin_gazebo/launch
+
+Next we setup the ecg workbench stuff. Therefore, we go into its respective scripts directory and initialize everything. 
+
+	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/scripts
+	./nlu.sh
+
+(TODO: This might give an error. However, the whole ecg stuff is actually only important for people working on it. Hence, for dealing only with the robot side, it is not required.)
 
 
-TBC...
+## Starting Gazebo and Related Modules
 
-## Unsuccessful Installation Protocol for ROS  indigo under MacOS (Yosemite El Capitan)
+Before starting gazebo the first time, I recommend downloading all 3d models for gazebo, since this speeds up the starting processes. To do so, execute the script (takes ~5 minutes, depending on your internet connection):
+
+	./download_gazebo_models.sh
+
+You can now start gazebo, which should bring up an indoor environment that we use for our experiments:
+
+	roslaunch darwin_gazebo indoor_darwin_gazebo.launch
+
+To have the robot walking, execute the test walking script that comes with darwin. I recommend to have a look at that script to see how the walking behaviour is executed. You can find it uner src/darwin_gazebo/src/. 
+
+	rosrun darwin_gazebo walter_demo.py
+
+To get started with our system, you'll want to start the CQI. Do so by entering:
+
+	rosrun ros_cqi run_interface.py
+
+Take a look at all files under the folder src/ros_cqi to understand how it works. 
+
+To run the NLU system, start the ECG workbench first. 
+
+rosrun ros_ecgworkbench run_nly.py
+
+(TODO: This gives an error. Sean, could you work on that?)
+
+Now, enter the following in the text input console which should have come up, to move the robot to coordinates 1 1:
+
+	Robot1, move to location 1 1!
+
+
+## Troubleshooting
+If there are problems with gazebo, especially the downloading of the world models, try the following before starting it:
+
+	export LC_NUMERIC=C
+
+# Unsuccessful Partial Installation Protocol for ROS indigo under MacOS (Yosemite El Capitan) To be solved...
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
 
 Everything went well until 
@@ -303,7 +366,7 @@ Again an error occurred:
 			Reproduce this error by running:
 			==> cd /Users/meppe/ROS/homebrew_catkin_ws/build_isolated/pcl_ros && /Users/meppe/ROS/homebrew_catkin_ws/install_isolated/env.sh cmake /Users/meppe/ROS/homebrew_catkin_ws/src/perception_pcl/pcl_ros -DCATKIN_DEVEL_PREFIX=/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros -DCMAKE_INSTALL_PREFIX=/Users/meppe/ROS/homebrew_catkin_ws/install_isolated -DCMAKE_BUILD_TYPE=Release -G 'Unix Makefiles'
 
-			Command failed, exiting.											
+			Command failed, exiting.				
 
 Then I did :
 
