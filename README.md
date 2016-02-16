@@ -37,13 +37,41 @@ To setup the indoor environment, we need to do some not very elegant things and 
 
 	cp config/launch_config/indoor_darwin_gazebo.launch src/darwin_gazebo/launch
 
-Next we setup the ecg workbench stuff. Therefore, we go into its respective scripts directory and initialize everything. 
+Next we setup the ECG NLU system. First, install the ECG transport tools. These are needed for ECG internal communication flow.
+	
+	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code
+	tar -xzvf ecg-package.tar.gz
+	cd ecg-package
+	./install.sh
 
-	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/scripts
-	./nlu.sh
+For more information about this, we refer to the INSTALL file in the ecg-package folder. 
 
-(TODO: This might give an error. However, the whole ecg stuff is actually only important for people working on it. Hence, for dealing only with the robot side, it is not required.)
+You also have to set paths for the ECG tranport tools. We recommend to do so in the .bashrc to export them automatically. Therefore, add the following lines to your ~/.bashrc (replacing <current package directory> with ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package).
+	
+	export ECG_TRANSPORT_INSTALLDIR=<current package directory>
+	export PATH=$ECG_TRANSPORT_INSTALLDIR/bin:${PATH}
+	export LD_LIBRARY_PATH=$ECG_TRANSPORT_INSTALLDIR/lib:${LD_LIBRARY_PATH}
+	export PYTHONPATH=$ECG_TRANSPORT_INSTALLDIR/lib/python:$PYTHONPATH
+	export MANPATH=$ECG_TRANSPORT_INSTALLDIR/share/man:$ECG_TRANSPORT_INSTALLDIR/man:${MANPATH}
+	export PKG_CONFIG_PATH=$ECG_TRANSPORT_INSTALLDIR/lib/pkgconfig:${PKG_CONFIG_PATH}
 
+And source the .bashrc again:
+
+	source ~/.bashrc
+
+You can test if the transport installation worked by opening two terminals, and in each of them do:
+
+	python ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package/bin/pyre-chat-example.py
+
+Now, if you enter text in one terminal, it should show up in the other terminal, too. 
+
+Next, you have to set the PYTHON for the ECG framework code. Add the following to your .bashrc:
+	
+	export PYTHONPATH=~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/robot_code/src/main:~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/src/main:$PYTHONPATH
+
+Source it again:
+
+	source ~/.bashrc
 
 ## Starting Gazebo and Related Modules
 
@@ -55,6 +83,8 @@ You can now start gazebo, which should bring up an indoor environment that we us
 
 	roslaunch darwin_gazebo indoor_darwin_gazebo.launch
 
+Now press the "play" button at the lower left of the simulator window. 
+
 To have the robot walking, execute the test walking script that comes with darwin. I recommend to have a look at that script to see how the walking behaviour is executed. You can find it uner src/darwin_gazebo/src/. 
 
 	rosrun darwin_gazebo walter_demo.py
@@ -65,21 +95,28 @@ To get started with our system, you'll want to start the CQI. Do so by entering:
 
 Take a look at all files under the folder src/ros_cqi to understand how it works. 
 
-To run the NLU system, start the ECG workbench first. 
+To run the NLU system, do the following (unfortunately, you have to start the script from the scripts-folder, due to some path problems that we have not resolved so far...):
 
-rosrun ros_ecgworkbench run_nly.py
-
-(TODO: This gives an error. Sean, could you work on that?)
+	cd ros_catkin_ecg_ws/src/ros_ecgworkbench/scripts/
+	rosrun ros_ecgworkbench run_nlu.py 
 
 Now, enter the following in the text input console which should have come up, to move the robot to coordinates 1 1:
 
 	Robot1, move to location 1 1!
+
+An error may show up in the window, but the robot will move. This is to be fixed in the future...
 
 
 ## Troubleshooting
 If there are problems with gazebo, especially the downloading of the world models, try the following before starting it:
 
 	export LC_NUMERIC=C
+
+## 3D modeling
+
+Gazebo comes with its own sdf model database. However, we'll probably want to also have our own 3d models. Therefore we need to provide an additional model database. Details on how this can be done can be found here: 
+
+http://gazebosim.org/tutorials?tut=model_structure&cat=
 
 # Unsuccessful Partial Installation Protocol for ROS indigo under MacOS (Yosemite El Capitan) To be solved...
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
