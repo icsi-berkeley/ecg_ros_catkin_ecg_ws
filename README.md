@@ -46,7 +46,7 @@ Next we setup the ECG NLU system. First, install the ECG transport tools. These 
 
 For more information about this, we refer to the INSTALL file in the ecg-package folder. 
 
-You also have to set paths for the ECG tranport tools. We recommend to do so in the .bashrc to export them automatically. Therefore, add the following lines to your ~/.bashrc (replacing <current package directory> with ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package).
+You also have to set paths for the ECG tranport tools. We recommend to do so in the .bashrc to export them automatically. Therefore, add the following lines to your ~/.bashrc (replacing "current package directory" with ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package).
 	
 	export ECG_TRANSPORT_INSTALLDIR=<current package directory>
 	export PATH=$ECG_TRANSPORT_INSTALLDIR/bin:${PATH}
