@@ -8,9 +8,11 @@ http://www.generationrobots.com/en/content/83-carry-out-simulations-and-make-you
 
 Install prerequisites for the gazebo_darwin packages and do:
 
-	sudo apt-get install git ros-indigo-desktop-full ros-indigo-gazebo-plugins ros-indigo-gazebo-ros ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-hector-gazebo-plugins ros-indigo-effort-controllers ros-indigo-joint-state-controller ros-indigo-joint-state-publisher ros-indigo-turtlebot-teleop 
+	sudo apt-get install git ros-indigo-desktop-full ros-indigo-gazebo-plugins ros-indigo-gazebo-ros ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-hector-gazebo-plugins ros-indigo-effort-controllers ros-indigo-joint-state-controller ros-indigo-joint-state-publisher ros-indigo-turtlebot-teleop ros-indigo-catkin
 
 Then clone this git repository. Its root folder is a new catkin workspace, which we assume to be ~/ros_catkin_ecg_ws. You'll execute most other commands in these instructions from there. 
+	
+	git clone https://github.com/icsi-berkeley/ros_catkin_ecg_ws.git ~/ros_catkin_ecg_wc
 
 Next, you need to initialize and update the submodules within this repository. The submodules contain the ROS code for the darwin robot and the ECG workbench. Cd into ~/ros_catkin_ecg_ws and do the following:
 	
