@@ -83,7 +83,7 @@ Before starting gazebo the first time, I recommend downloading all 3d models for
 
 You can now start gazebo, which should bring up an indoor environment that we use for our experiments:
 
-	roslaunch darwin_gazebo indoor_darwin_gazebo.launch
+	roslaunch ros_cqi indoor_darwin_gazebo.launch
 
 Now press the "play" button at the lower left of the simulator window. 
 
