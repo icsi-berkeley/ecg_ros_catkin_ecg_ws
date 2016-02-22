@@ -35,10 +35,6 @@ Next you need to source come setup file. We recommend to do this automatically b
 	echo "source ~/ros_catkin_ecg_ws/devel/setup.bash" >> ~/.bashrc
 	source ~/.bashrc
 
-To setup the indoor environment, we need to do some not very elegant things and copy a predefined indoor environment launch file for the darwin to the darwin_gazeob launch folder:
-
-	cp config/launch_config/indoor_darwin_gazebo.launch src/darwin_gazebo/launch
-
 Next we setup the ECG NLU system. First, install the ECG transport tools. These are needed for ECG internal communication flow.
 	
 	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code
@@ -89,7 +85,7 @@ Now press the "play" button at the lower left of the simulator window.
 
 To have the robot walking, execute the test walking script that comes with darwin. I recommend to have a look at that script to see how the walking behaviour is executed. You can find it uner src/darwin_gazebo/src/. 
 
-	rosrun darwin_gazebo walter_demo.py
+	rosrun darwin_gazebo walker_demo.py
 
 To get started with our system, you'll want to start the CQI. Do so by entering:
 
