@@ -6,9 +6,14 @@ The installation notes are based on the following tutorial for DARwin-OP:
 http://www.generationrobots.com/en/content/83-carry-out-simulations-and-make-your-darwin-op-walk-with-gazebo-and-ros
 
 
-Install prerequisites for the gazebo_darwin packages and do:
+Install ROS indigo, as well as the prerequisites for the gazebo_darwin packages and do:
 
 	sudo apt-get install git ros-indigo-desktop-full ros-indigo-gazebo-plugins ros-indigo-gazebo-ros ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-hector-gazebo-plugins ros-indigo-effort-controllers ros-indigo-joint-state-controller ros-indigo-joint-state-publisher ros-indigo-turtlebot-teleop ros-indigo-catkin
+
+To get ROS running, you need to source the setup.bash. We recommend to have that done automatically in .bashrc. Do the following:
+
+	echo "source /opt/ros/indigo/setup.bash" >> .bashrc
+	source ~/.bashrc
 
 Then clone this git repository. Its root folder is a new catkin workspace, which we assume to be ~/ros_catkin_ecg_ws. You'll execute most other commands in these instructions from there. 
 	
