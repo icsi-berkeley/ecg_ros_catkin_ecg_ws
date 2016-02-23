@@ -16,3 +16,6 @@
 [submodule "src/lsd_slam"]
 	path = src/lsd_slam
 	url = https://github.com/tum-vision/lsd_slam.git
+[submodule "pr2_simulator"]
+	path = pr2_simulator
+	url = https://github.com/PR2/pr2_simulator
