@@ -15,4 +15,5 @@ do
 done
 
 # Copy extracted files to the local model folder
+mkdir -p "$HOME/.gazebo/models/"
 cp -vfR * "$HOME/.gazebo/models/"
