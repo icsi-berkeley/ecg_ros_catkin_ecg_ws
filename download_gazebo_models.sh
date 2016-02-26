@@ -2,6 +2,9 @@
 
 #!/bin/sh
 
+# Make models folder if it does not exist so far
+mkdir -p "$HOME/.gazebo/models/"
+
 # Download all model archive files
 wget -l 2 -nc -r "http://models.gazebosim.org/" --accept gz
 
@@ -15,5 +18,5 @@ do
 done
 
 # Copy extracted files to the local model folder
-mkdir -p "$HOME/.gazebo/models/"
 cp -vfR * "$HOME/.gazebo/models/"
+
