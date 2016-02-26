@@ -84,13 +84,18 @@ Before starting gazebo the first time, I recommend downloading all 3d models for
 
 You can now start gazebo, which should bring up an indoor environment that we use for our experiments:
 
-	roslaunch ros_cqi indoor_darwin_gazebo.launch
+	roslaunch ros_cqi run_gazebo_darwin_kitchen.launch
+	roslaunch ros_cqi spawn_darwin.launch
 
 Now press the "play" button at the lower left of the simulator window. 
 
 To have the robot walking, execute the test walking script that comes with darwin. I recommend to have a look at that script to see how the walking behaviour is executed. You can find it uner src/darwin_gazebo/src/. 
 
 	rosrun darwin_gazebo walker_demo.py
+
+Alternatively run the pickup pen scenario from the paper:
+	
+	rosrun ros_cqi run_interface.py
 
 To get started with our system, you'll want to start the CQI. Do so by entering:
 
