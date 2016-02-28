@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <sdf version="1.5">
-  <model name="small beer">
+  <model name="soda_can">
     <link name="link">
       <pose>0 0 0.115 0 0 0</pose>
       <inertial>
@@ -31,8 +31,8 @@
         </geometry>
         <material>
           <script>
-            <uri>model://beer/materials/scripts</uri>
-            <uri>model://beer/materials/textures</uri>
+            <uri>model://soda_can/materials/scripts</uri>
+            <uri>model://soda_can/materials/textures</uri>
             <name>Beer/Diffuse</name>
           </script>
         </material>
@@ -46,22 +46,6 @@
           </cylinder>
         </geometry>
       </collision>
-      <!-- <visual name="visual_anti_slip_ring">
-        <pose> 0 0 0.08 0 0 0</pose>
-        <geometry>
-          <cylinder>
-            <radius>0.050000</radius>
-            <length>0.010000</length>
-          </cylinder>
-        </geometry>
-        <material>
-          <script>
-            <uri>model://beer/materials/scripts</uri>
-            <uri>model://beer/materials/textures</uri>
-            <name>Beer/Diffuse</name>
-          </script>
-        </material>
-      </visual> -->
     </link>
   </model>
 </sdf>

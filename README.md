@@ -62,6 +62,10 @@ And source the .bashrc again:
 
 	source ~/.bashrc
 
+You also have to install a python module called ipaddress using pip:
+
+	sudo pip install ipaddress
+
 You can test if the transport installation worked by opening two terminals, and in each of them do:
 
 	python ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package/bin/pyre-chat-example.py
