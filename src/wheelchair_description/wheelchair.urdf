@@ -1,0 +1,265 @@
+<?xml version="1.0" ?>
+<robot name="wheelchair">
+	<!-- Base link -->
+	<link name="base_link">
+  	<collision>
+    		<origin xyz="0 0 0" rpy="0 0 0"/>
+    		<geometry>
+      		<box size="0.6 0.55 0.1"/>
+    		</geometry>
+  	</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<geometry>
+				<box size="0.6 0.55 0.1"/>
+			</geometry>
+			<material name="white">
+				<color rgba="1 1 1 1"/>
+			</material>
+		</visual>
+	</link>
+	<gazebo reference="base_link">
+      <mu1 value="1.0"/>
+      <mu2 value="1.0"/>
+      <kp  value="10000000.0" />
+      <kd  value="1.0" />
+      <fdir1 value="1 0 0"/>
+      <material>Gazebo/Grey</material>
+      <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+	<!-- Back -->
+	<link name="back">
+		<inertial>
+      		<origin xyz="0 0 0" rpy="0 0 1.57095"/>
+      		<mass value="5"/>
+      		<inertia ixx="0.154167"  ixy="0"  ixz="0" iyy="0.130208" iyz="0" izz="0.276042" />
+    	</inertial>
+    	<collision>
+      		<origin xyz="0 0 0" rpy="0 0 1.570795"/>
+      		<geometry>
+        		<box size="0.6 0.1 0.75"/>
+      		</geometry>
+    	</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 1.570795" />
+			<geometry>
+				<box size="0.6 0.1 0.75"/>
+			</geometry>
+			<material name="white">
+				<color rgba="1 1 1 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="joint_base_back" type="fixed">
+		<parent link="base_link"/>
+		<child link="back"/>
+		<origin xyz="0 -0.30 0.3" rpy="0 0 1.570795" />
+	</joint>
+	<gazebo reference="back">
+      <mu1 value="1.0"/>
+      <mu2 value="1.0"/>
+      <kp  value="10000000.0" />
+      <kd  value="1.0" />
+      <fdir1 value="1 0 0"/>
+      <material>Gazebo/Grey</material>
+      <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+
+	<!-- left main wheel -->
+	<link name="left_m_wheel">
+		<inertial>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<mass value="5"/>
+      		<inertia ixx="0.154167"  ixy="0"  ixz="0" iyy="0.130208" iyz="0" izz="0.30625" />
+    	</inertial>
+    	<collision>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<geometry>
+        		<cylinder length="0.05" radius="0.35"/>
+      		</geometry>
+    	</collision>
+		<visual>
+			<origin xyz="0 0 0"  rpy="0 1.570795 0"/>
+			<geometry>
+				<cylinder length="0.05" radius="0.35"/>
+			</geometry>
+			<material name="blue">
+				<color rgba=".5 .5 100 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="join_left_m" type="revolute">
+		<limit lower="0" upper="0" effort="100" velocity="10" />
+		<parent link="base_link"/>
+		<child link="left_m_wheel"/>
+		<origin xyz="-0.35 -0.275 -0.2" rpy="0 0 0"/>
+		<axis xyz="0 0.275 -0.2" rpy="0 0 0"/>
+	</joint>
+	<gazebo reference="left_m_wheel">
+      <mu1 value="1.0"/>
+      <mu2 value="1.0"/>
+      <kp  value="10000000.0" />
+      <kd  value="1.0" />
+      <fdir1 value="1 0 0"/>
+      <material>Gazebo/Grey</material>
+      <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+    <transmission name="left_m_wheel_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$join_left_m" />
+      <actuator name="left_m_wheel_joint_motor">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+	<!-- right main wheel -->
+	<link name="right_m_wheel">
+		<inertial>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<mass value="5"/>
+      		<inertia ixx="0.154167"  ixy="0"  ixz="0" iyy="0.130208" iyz="0" izz="0.30625" />
+    	</inertial>
+    	<collision>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<geometry>
+        		<cylinder length="0.05" radius="0.35"/>
+      		</geometry>
+    	</collision>
+		<visual>
+			<origin xyz="0 0 0"  rpy="0 1.570795 0"/>
+			<geometry>
+				<cylinder length="0.05" radius="0.35"/>
+			</geometry>
+			<material name="blue">
+				<color rgba=".5 .5 100 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="join_right_m" type="revolute">
+		<limit lower="0" upper="0" effort="100" velocity="10" />
+		<parent link="base_link"/>
+		<child link="right_m_wheel"/>
+		<origin xyz="0.35 -0.275 -0.2" rpy="0 0 0"/>
+		<axis xyz="0 0.275 -0.2" rpy="0 0 0"/>
+	</joint>
+	<gazebo reference="right_m_wheel">
+      <mu1 value="1.0"/>
+      <mu2 value="1.0"/>
+      <kp  value="10000000.0" />
+      <kd  value="1.0" />
+      <fdir1 value="1 0 0"/>
+      <material>Gazebo/Grey</material>
+      <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+    <transmission name="right_m_wheel_joint_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="$join_left_m" />
+      <actuator name="right_m_wheel_joint_motor">
+        <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>10</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+	<!-- left castor wheel-->
+	<link name="left_castor_wheel">
+		<inertial>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<mass value="5"/>
+      		<inertia ixx="0.154167"  ixy="0"  ixz="0" iyy="0.130208" iyz="0" izz="0.064" />
+    	</inertial>
+    	<collision>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<geometry>
+        		<cylinder length="0.05" radius="0.16"/>
+      		</geometry>
+    	</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+			<geometry>
+				<cylinder length="0.05" radius="0.16"/>
+			</geometry>
+			<material name="blue">
+				<color rgba=".5 .5 100 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="join_left_c" type="revolute">
+		<limit lower="0" upper="0" effort="100" velocity="10" />
+		<parent link="base_link"/>
+		<child link="left_castor_wheel"/>
+		<origin xyz="-0.35 0.3 -0.39" rpy="0 0 0"/>
+		<axis xyz="0 0.3 -0.39" rpy="0 0 0"/>
+	</joint>
+	<gazebo reference="left_castor_wheel">
+      <mu1 value="0"/>
+      <mu2 value="0"/>
+      <kp  value="10000000.0" />
+      <kd  value="1.0" />
+      <fdir1 value="1 0 0"/>
+      <material>Gazebo/Grey</material>
+      <turnGravityOff>false</turnGravityOff>
+    </gazebo>
+
+	<!-- right castor wheel-->
+	<link name="right_castor_wheel">
+		<inertial>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<mass value="5"/>
+      		<inertia ixx="0.154167"  ixy="0"  ixz="0" iyy="0.130208" iyz="0" izz="0.064" />
+    	</inertial>
+    	<collision>
+      		<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+      		<geometry>
+        		<cylinder length="0.05" radius="0.16"/>
+      		</geometry>
+    	</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 1.570795 0"/>
+			<geometry>
+				<cylinder length="0.05" radius="0.16"/>
+			</geometry>
+			<material name="blue">
+				<color rgba=".5 .5 100 1"/>
+			</material>
+		</visual>
+	</link>
+	<joint name="join_right_c" type="revolute">
+		<limit lower="0" upper="0" effort="100" velocity="10" />
+		<parent link="base_link"/>
+		<child link="right_castor_wheel"/>
+		<origin xyz="0.35 0.3 -0.39" rpy="0 0 0"/>
+		<axis xyz="0 0.3 -0.39" rpy="0 0 0"/>
+	</joint>
+	<gazebo reference="right_castor_wheel">
+    	<mu1 value="0"/>
+      	<mu2 value="0"/>
+      	<kp  value="10000000.0" />
+      	<kd  value="1.0" />
+      	<fdir1 value="1 0 0"/>
+      	<material>Gazebo/Grey</material>
+      	<turnGravityOff>false</turnGravityOff>
+    </gazebo>
+
+   	<gazebo>
+   		<controller name="gazebo_ros_force" plugin="libgazebo_ros_force.so">
+	      	<alwaysOn>true</alwaysOn>
+	   		<update>100</update>
+	      	<updateRate>100.0</updateRate>
+	      	<bodyName>right_m_wheel</bodyName>
+	      	<topicName>wheelchair/r_m_wheel/torque</topicName>
+    	</controller>
+  	</gazebo>
+
+  	<gazebo>
+  		<controller name="gazebo_ros_force" plugin="libgazebo_ros_force.so">
+	      <alwaysOn>true</alwaysOn>
+	      <update>100</update>
+	      <updateRate>100.0</updateRate>
+	      <bodyName>left_m_wheel</bodyName>
+	      <topicName>wheelchair/l_m_wheel/torque</topicName>
+	    </controller>
+  	</gazebo>
+
+</robot>

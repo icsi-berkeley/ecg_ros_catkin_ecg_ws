@@ -1,0 +1,12 @@
+<launch>
+<include file="$(find gazebo_ros)/launch/empty_world.launch">	    
+	<arg name="world_name" value="$(find chair_gazebo)/worlds/chair.world"/>
+	<arg name="gui" value="true"/>	  
+</include>
+
+<param name="robot_description" textfile="$(find chair_description)/urdf/chair.urdf"/>
+
+<node name="spawn_chair_urdf" pkg="gazebo_ros" type="spawn_model" output="screen" args="-sdf -param robot_description -model chair -z 0.6"/>
+<!-- ros_control mybot launch file -->
+<include file="$(find chair_control)/launch/chair_control.launch" /> 
+</launch>

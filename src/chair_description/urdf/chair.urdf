@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="chair">
+  <!-- Base link -->
+  <link name="base_link" />
+  <joint name="base_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="chasis" />
+  </joint>
+  <link name="chasis">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="2" />
+      <inertia ixx="0.02083328" ixy="0" ixz="0" iyy="0.06166668" iyz="0" izz="0.10166667" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.6 0.55 0.1" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.6 0.55 0.1" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+  </link>
+  <gazebo reference="chasis">
+    <mu1 value="0" />
+    <mu2 value="0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="1 0 0" />
+    <material>Gazebo/Grey</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <!-- Back -->
+  <link name="back">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 1.57095" />
+      <mass value="2" />
+      <inertia ixx="0.0954167" ixy="0" ixz="0" iyy="0.15375" iyz="0" izz="0.0616667" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 1.570795" />
+      <geometry>
+        <box size="0.6 0.1 0.75" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.570795" />
+      <geometry>
+        <box size="0.6 0.1 0.75" />
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="joint_base_back" type="fixed">
+    <parent link="chasis" />
+    <child link="back" />
+    <origin xyz="0 -0.30 0.3" rpy="0 0 1.570795" />
+  </joint>
+  <gazebo reference="back">
+    <mu1 value="0" />
+    <mu2 value="0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="1 0 0" />
+    <material>Gazebo/Grey</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+  <!-- left main wheel -->
+  <link name="left_m_wheel">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <mass value="1" />
+      <inertia ixx="0.0308333" ixy="0" ixz="0" iyy="0.0308333" iyz="0" izz="0.06125" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.36" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.35" />
+      </geometry>
+      <material name="blue">
+        <color rgba=".5 .5 100 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="join_left_m" type="continuous">
+    <limit effort="100" velocity="100" />
+    <parent link="chasis" />
+    <child link="left_m_wheel" />
+    <origin xyz="-0.35 -0.275 -0.2" rpy="0 0 0" />
+    <axis xyz="1 0 0" rpy="0 0 0" />
+  </joint>
+  <transmission name="join_left_m_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="join_left_m">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="left_m_wheel_joint_motor">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="left_m_wheel">
+    <mu1 value="100000.0" />
+    <mu2 value="100000.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="0 1 0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- right main wheel -->
+  <link name="right_m_wheel">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <mass value="5" />
+      <inertia ixx="0.0308333" ixy="0" ixz="0" iyy="0.0308333" iyz="0" izz="0.06125" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.36" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.35" />
+      </geometry>
+      <material name="blue">
+        <color rgba=".5 .5 100 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="join_right_m" type="continuous">
+    <limit effort="100" velocity="100" />
+    <parent link="chasis" />
+    <child link="right_m_wheel" />
+    <origin xyz="0.35 -0.275 -0.2" rpy="0 0 0" />
+    <axis xyz="1 0 0" rpy="0 0 0" />
+  </joint>
+  <transmission name="join_right_m_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="join_right_m">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="right_m_wheel_joint_motor">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <gazebo reference="right_m_wheel">
+    <mu1 value="100000.0" />
+    <mu2 value="100000.0" />
+    <kp value="10000000.0" />
+    <kd value="1.0" />
+    <fdir1 value="0 1 0" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- left castor wheel-->
+  <link name="left_castor_wheel">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <mass value="2" />
+      <inertia ixx="0.01321667" ixy="0" ixz="0" iyy="0.01321667" iyz="0" izz="0.00256" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.16" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.16" />
+      </geometry>
+      <material name="blue">
+        <color rgba=".5 .5 100 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="join_left_c" type="continuous">
+    <limit effort="100" velocity="10" />
+    <parent link="chasis" />
+    <child link="left_castor_wheel" />
+    <origin xyz="-0.35 0.3 -0.39" rpy="0 0 0" />
+    <axis xyz="0 0 1" rpy="0 0 0" />
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+  <gazebo reference="left_castor_wheel">
+    <mu1 value="0.03" />
+    <mu2 value="0.1" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <!-- right castor wheel-->
+  <link name="right_castor_wheel">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <mass value="5" />
+      <inertia ixx="0.01321667" ixy="0" ixz="0" iyy="0.01321667" iyz="0" izz="0.00256" />
+    </inertial>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.16" />
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 1.570795 0" />
+      <geometry>
+        <cylinder length="0.05" radius="0.16" />
+      </geometry>
+      <material name="blue">
+        <color rgba=".5 .5 100 1" />
+      </material>
+    </visual>
+  </link>
+  <joint name="join_right_c" type="continuous">
+    <limit effort="100" velocity="10" />
+    <parent link="chasis" />
+    <child link="right_castor_wheel" />
+    <origin xyz="0.35 0.3 -0.39" rpy="0 0 0" />
+    <axis xyz="0 0 1" rpy="0 0 0" />
+    <joint_properties damping="0.0" friction="0.0"/>
+  </joint>
+  <gazebo reference="right_castor_wheel">
+    <mu1 value="0.03" />
+    <mu2 value="0.1" />
+    <material>Gazebo/Grey</material>
+  </gazebo>
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>100</updateRate>
+      <leftJoint>join_left_m</leftJoint>
+      <rightJoint>join_right_m</rightJoint>
+      <wheelSeparation>0.75</wheelSeparation>
+      <wheelDiameter>0.72</wheelDiameter>
+      <torque>10</torque>
+      <commandTopic>chair/cmd_vel</commandTopic>
+      <odometryTopic>chair/odom_diffdrive</odometryTopic>
+      <odometryFrame>odom</odometryFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
+    </plugin>
+  </gazebo>
+</robot>
