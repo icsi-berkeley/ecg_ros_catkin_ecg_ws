@@ -1,9 +1,136 @@
 # ros_catkin_ecg_ws
-The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT repository to collect all required repositories as submodules for running the ECG workbench demos. All code is supposed to run under ROS indigo. Tested with Ubuntu 14.04
+The ROS workspace to run ECG workbench demos. This is basically a wrapper GIT repository to collect all required repositories as submodules for running the ECG workbench demos. All code is supposed to run under ROS indigo and tested with Ubuntu 14.04. Everything is tested with Python 2.7.X only, Python 3.X will probably not work. 
+
+## Installation and Dependencies
+The installation notes are based on the following tutorial for DARwin-OP:
+http://www.generationrobots.com/en/content/83-carry-out-simulations-and-make-your-darwin-op-walk-with-gazebo-and-ros
 
 
+Install ROS indigo, as well as the prerequisites for the gazebo_darwin packages and do:
 
-## Unsuccessful Installation Protocol for ROS  indigo under MacOS (Yosemite El Capitan)
+	sudo apt-get install git ros-indigo-desktop-full ros-indigo-gazebo-plugins ros-indigo-gazebo-ros ros-indigo-gazebo-ros-control ros-indigo-hector-gazebo ros-indigo-hector-gazebo-plugins ros-indigo-effort-controllers ros-indigo-joint-state-controller ros-indigo-joint-state-publisher ros-indigo-turtlebot-teleop ros-indigo-catkin
+
+To get ROS running, you need to source the setup.bash. We recommend to have that done automatically in .bashrc. Do the following:
+
+	echo "source /opt/ros/indigo/setup.bash" >> .bashrc
+	source ~/.bashrc
+
+Then clone this git repository. Its root folder is a new catkin workspace, which we assume to be ~/ros_catkin_ecg_ws. You'll execute most other commands in these instructions from there. 
+	
+	git clone https://github.com/icsi-berkeley/ros_catkin_ecg_ws.git ~/ros_catkin_ecg_wc
+
+Next, you need to initialize and update the submodules within this repository. The submodules contain the ROS code for the darwin robot and the ECG workbench. Cd into ~/ros_catkin_ecg_ws and do the following:
+	
+	cd ~/ros_catkin_ecg_ws
+	git submodule update --init --recursive	
+	
+Make sure that you have checked out the py2 branch of ecg workbench:
+
+	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench
+	git checkout py2
+
+Now you need to build the workspace. Do this by 
+	
+	cd ~/ros_catkin_ecg_ws
+	catkin_make
+	catkin_make install
+
+Next you need to source come setup file. We recommend to do this automatically by doing that in your .bashrc.
+
+	echo "source ~/ros_catkin_ecg_ws/devel/setup.bash" >> ~/.bashrc
+	source ~/.bashrc
+
+Next we setup the ECG NLU system. First, install the ECG transport tools. These are needed for ECG internal communication flow.
+	
+	cd ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code
+	tar -xzvf ecg-package.tar.gz
+	cd ecg-package
+	./install.sh
+
+For more information about this, we refer to the INSTALL file in the ecg-package folder. 
+
+You also have to set paths for the ECG tranport tools. We recommend to do so in the .bashrc to export them automatically. Therefore, add the following lines to your ~/.bashrc (replacing "current package directory" with ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package).
+	
+	export ECG_TRANSPORT_INSTALLDIR=<current package directory>
+	export PATH=$ECG_TRANSPORT_INSTALLDIR/bin:${PATH}
+	export LD_LIBRARY_PATH=$ECG_TRANSPORT_INSTALLDIR/lib:${LD_LIBRARY_PATH}
+	export PYTHONPATH=$ECG_TRANSPORT_INSTALLDIR/lib/python:$PYTHONPATH
+	export MANPATH=$ECG_TRANSPORT_INSTALLDIR/share/man:$ECG_TRANSPORT_INSTALLDIR/man:${MANPATH}
+	export PKG_CONFIG_PATH=$ECG_TRANSPORT_INSTALLDIR/lib/pkgconfig:${PKG_CONFIG_PATH}
+
+And source the .bashrc again:
+
+	source ~/.bashrc
+
+You also have to install a python module called ipaddress using pip:
+
+	sudo pip install ipaddress
+
+You can test if the transport installation worked by opening two terminals, and in each of them do:
+
+	python ~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/ecg-package/bin/pyre-chat-example.py
+
+Now, if you enter text in one terminal, it should show up in the other terminal, too. 
+
+Next, you have to set the PYTHON for the ECG framework code. Add the following to your .bashrc:
+	
+	export PYTHONPATH=~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/robot_code/src/main:~/ros_catkin_ecg_ws/src/ros_ecgworkbench/src/ecg/ecg_interface/framework_code/src/main:$PYTHONPATH
+
+Source it again:
+
+	source ~/.bashrc
+
+## Starting Gazebo and Related Modules
+
+Before starting gazebo the first time, I recommend downloading all 3d models for gazebo, since this speeds up the starting processes. To do so, execute the script (takes ~5 minutes, depending on your internet connection):
+
+	./download_gazebo_models.sh
+
+You can now start gazebo, which should bring up an indoor environment that we use for our experiments:
+
+	roslaunch ros_cqi run_gazebo_darwin_kitchen.launch
+	roslaunch ros_cqi spawn_darwin.launch
+
+Now press the "play" button at the lower left of the simulator window. 
+
+To have the robot walking, execute the test walking script that comes with darwin. I recommend to have a look at that script to see how the walking behaviour is executed. You can find it uner src/darwin_gazebo/src/. 
+
+	rosrun darwin_gazebo walker_demo.py
+
+Alternatively run the pickup pen scenario from the paper:
+	
+	rosrun ros_cqi run_interface.py
+
+To get started with our system, you'll want to start the CQI. Do so by entering:
+
+	rosrun ros_cqi run_interface.py
+
+Take a look at all files under the folder src/ros_cqi to understand how it works. 
+
+To run the NLU system, do the following (unfortunately, you have to start the script from the scripts-folder, due to some path problems that we have not resolved so far...):
+
+	cd ros_catkin_ecg_ws/src/ros_ecgworkbench/scripts/
+	rosrun ros_ecgworkbench run_nlu.py 
+
+Now, enter the following in the text input console which should have come up, to move the robot to coordinates 1 1:
+
+	Robot1, move to location 1 1!
+
+An error may show up in the window, but the robot will move. This is to be fixed in the future...
+
+
+## Troubleshooting
+If there are problems with gazebo, especially the downloading of the world models, try the following before starting it:
+
+	export LC_NUMERIC=C
+
+## 3D modeling
+
+Gazebo comes with its own sdf model database. However, we'll probably want to also have our own 3d models. Therefore we need to provide an additional model database. Details on how this can be done can be found here: 
+
+http://gazebosim.org/tutorials?tut=model_structure&cat=
+
+# Unsuccessful Partial Installation Protocol for ROS indigo under MacOS (Yosemite El Capitan) To be solved...
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
 
 Everything went well until 
@@ -32,6 +159,7 @@ Try to fix: by installing xquartz using
 	brew install Caskroom/cask/xquartz
 
 Then the next error was:
+
 			ERROR: the following rosdeps failed to install
 			  homebrew: Failed to detect successful installation of [gazebo]
 			  homebrew: Failed to detect successful installation of [graphviz]
@@ -287,7 +415,7 @@ Again an error occurred:
 			Reproduce this error by running:
 			==> cd /Users/meppe/ROS/homebrew_catkin_ws/build_isolated/pcl_ros && /Users/meppe/ROS/homebrew_catkin_ws/install_isolated/env.sh cmake /Users/meppe/ROS/homebrew_catkin_ws/src/perception_pcl/pcl_ros -DCATKIN_DEVEL_PREFIX=/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros -DCMAKE_INSTALL_PREFIX=/Users/meppe/ROS/homebrew_catkin_ws/install_isolated -DCMAKE_BUILD_TYPE=Release -G 'Unix Makefiles'
 
-			Command failed, exiting.											
+			Command failed, exiting.				
 
 Then I did :
 
@@ -369,4 +497,50 @@ The same error occurred:
 			Command failed, exiting.
 
 
-Stopped here and did not try further. 
+Followed the hint at http://stackoverflow.com/questions/26311715/solving-a-difficult-compilation-issue
+That is, glew seems to be not present anymore in MacOS since 10.9 (Mavericks), so that the file 
+/usr/local/share/pcl-1.8/PCLConfig.cmake is deprecated. 
+To fix the issue, change the following line (around line number 500) in that file:
+	
+	/System/Library/Frameworks/GLEW.framework/Versions/A/Headers
+
+to line:
+	
+	/usr/local/Cellar/glew/1.13.0/include/GL
+
+
+Then, running catkin_make_isolated again caused other errors:
+
+	[ 20%] Built target pcl_ros_gencfg
+	[ 22%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pcd_to_image
+	[ 23%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pointcloud_to_image
+	[ 25%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pcd_to_pointcloud
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pcd_to_image] Error 1
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/convert_pointcloud_to_image] Error 1
+	make[1]: *** [CMakeFiles/convert_pcd_to_image.dir/all] Error 2
+	make[1]: *** Waiting for unfinished jobs....
+	make[1]: *** [CMakeFiles/convert_pointcloud_to_image.dir/all] Error 2
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pcd_to_pointcloud] Error 1
+	make[1]: *** [CMakeFiles/pcd_to_pointcloud.dir/all] Error 2
+	[ 26%] Linking CXX executable /Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pointcloud_to_pcd
+	ld: framework not found GLEW
+	clang: error: linker command failed with exit code 1 (use -v to see invocation)
+	make[2]: *** [/Users/meppe/ROS/homebrew_catkin_ws/devel_isolated/pcl_ros/lib/pcl_ros/pointcloud_to_pcd] Error 1
+	make[1]: *** [CMakeFiles/pointcloud_to_pcd.dir/all] Error 2
+	make: *** [all] Error 2
+	<== Failed to process package 'pcl_ros': 
+	  Command '['/Users/meppe/ROS/homebrew_catkin_ws/install_isolated/env.sh', 'make', '-j4', '-l4']' returned non-zero exit status 2
+
+	Reproduce this error by running:
+	==> cd /Users/meppe/ROS/homebrew_catkin_ws/build_isolated/pcl_ros && /Users/meppe/ROS/homebrew_catkin_ws/install_isolated/env.sh make -j4 -l4
+
+	Command failed, exiting.
+
+
+TBC... stopped at this point. 

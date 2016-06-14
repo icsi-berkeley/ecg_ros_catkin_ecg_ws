@@ -50,6 +50,7 @@ coverage.xml
 # Other 
 ._.DS_Store
 .DS_Store
+*.cmake
 
 # Django stuff:
 *.log
@@ -59,3 +60,4 @@ docs/_build/
 
 # PyBuilder
 target/
+devel
