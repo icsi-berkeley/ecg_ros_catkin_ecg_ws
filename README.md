@@ -1,8 +1,8 @@
 # Installation under Ubuntu 
 The installation instructions for this ROS package, which includes the ECG code, is now available under our general ECG framework documentation here https://github.com/icsi-berkeley/ecg_robot_code/wiki/Tutorial:-Ros-Demo .
 
-# Unsuccessful Partial Installation Protocol for ROS indigo under MacOS (Yosemite El Capitan) To be solved...
-We do not recomment to try to run this on a Mac. However, if you want to go adventurous then this incomplete installation protocol might hep you. 
+# Unsuccessful Partial Installation Protocol for ROS Indigo under MacOS (Yosemite El Capitan)
+We do not recomment to try to run this on a Mac. However, if you want to go adventurous then this incomplete installation protocol might help you. 
 
 Followed the instructions at http://wiki.ros.org/indigo/Installation/OSX/Homebrew/Source
 
