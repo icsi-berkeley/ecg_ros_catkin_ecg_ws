@@ -20,3 +20,5 @@ done
 # Copy extracted files to the local model folder
 cp -vfR * "$HOME/.gazebo/models/"
 
+# Copy our custom models to the model folder
+cp -vfR custom_models/* "$HOME/.gazebo/models/"
